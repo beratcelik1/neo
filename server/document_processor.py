@@ -40,10 +40,33 @@ class DocumentProcessor:
     - ChromaDB vector database for semantic search
     - PDF processing with text extraction
     - Stable paths - no more random folder creation!
+    - Dynamic AI model selection support
     """
     
-    def __init__(self):
-        """Initialize with STABLE paths relative to project root."""
+    # Available AI models
+    AVAILABLE_MODELS = {
+        'gpt-3.5-turbo': {
+            'name': 'GPT-3.5 Turbo',
+            'description': 'Fast and cost-effective model for most tasks',
+            'max_tokens': 4096,
+            'cost_level': 'low'
+        },
+        'gpt-4o-mini': {
+            'name': 'GPT-4o Mini',
+            'description': 'Balanced performance and efficiency',
+            'max_tokens': 128000,
+            'cost_level': 'medium'
+        },
+        'gpt-4.1': {
+            'name': 'GPT-4.1',
+            'description': 'Most advanced model with superior reasoning',
+            'max_tokens': 128000,
+            'cost_level': 'high'
+        }
+    }
+    
+    def __init__(self, chat_model: str = None, embedding_model: str = None):
+        """Initialize with STABLE paths relative to project root and optional model selection."""
         
         # 🔧 Get PROJECT ROOT (always /path/to/neo regardless of where we run)
         self.project_root = Path(__file__).parent.parent.absolute()
@@ -74,14 +97,21 @@ class DocumentProcessor:
         
         self.openai_client = openai.OpenAI(api_key=self.openai_api_key)
         
-        # Configuration from environment or defaults
-        self.embedding_model = os.getenv('EMBEDDING_MODEL', 'text-embedding-ada-002')
-        self.chat_model = os.getenv('CHAT_MODEL', 'gpt-4o-mini')
+        # Configuration from environment or defaults with model selection support
+        self.embedding_model = embedding_model or os.getenv('EMBEDDING_MODEL', 'text-embedding-ada-002')
+        self.chat_model = chat_model or os.getenv('CHAT_MODEL', 'gpt-4o-mini')
+        
+        # Validate selected model
+        if self.chat_model not in self.AVAILABLE_MODELS:
+            logger.warning(f"Unknown model {self.chat_model}, falling back to gpt-4o-mini")
+            self.chat_model = 'gpt-4o-mini'
+            
         self.chunk_size = int(os.getenv('CHUNK_SIZE', '1000'))
         self.chunk_overlap = int(os.getenv('CHUNK_OVERLAP', '200'))
         self.max_chunks_per_document = int(os.getenv('MAX_CHUNKS_PER_DOCUMENT', '100'))
         
         print(f"🤖 AI Models: {self.embedding_model}, {self.chat_model}")
+        print(f"📝 Selected Model: {self.AVAILABLE_MODELS[self.chat_model]['name']}")
         
         # Initialize Vector Database (ChromaDB) with STABLE path
         try:
@@ -453,19 +483,33 @@ Please provide a comprehensive answer based on the information above. If the inf
             AI-generated summary
         """
         try:
-            # Get all chunks for the document
-            results = self.collection.query(
-                query_embeddings=None,
-                n_results=100,  # Get many chunks
-                where={"doc_id": doc_id}
-            )
+            # Get all chunks for the document using get method with where filter
+            try:
+                results = self.collection.get(
+                    where={"doc_id": doc_id},
+                    include=['documents', 'metadatas']
+                )
+            except Exception as e:
+                logger.error(f"Failed to get document chunks: {e}")
+                # Fallback: try to get all documents and filter manually
+                all_results = self.collection.get()
+                results = {
+                    'documents': [],
+                    'metadatas': []
+                }
+                
+                if all_results['metadatas']:
+                    for i, metadata in enumerate(all_results['metadatas']):
+                        if metadata.get('doc_id') == doc_id:
+                            results['documents'].append(all_results['documents'][i])
+                            results['metadatas'].append(metadata)
             
-            if not results['documents'] or not results['documents'][0]:
+            if not results['documents']:
                 raise ValueError(f"Document {doc_id} not found")
             
             # Combine chunks
-            doc_chunks = results['documents'][0]
-            doc_metadata = results['metadatas'][0][0]  # Get metadata from first chunk
+            doc_chunks = results['documents']
+            doc_metadata = results['metadatas'][0]  # Get metadata from first chunk
             doc_name = doc_metadata.get('doc_name', 'Unknown Document')
             
             # Combine text (limit to reasonable length for GPT)
@@ -531,6 +575,39 @@ Make the summary clear, concise, and well-structured."""
         except Exception as e:
             logger.error(f"Failed to get documents list: {e}")
             return []
+
+    def set_chat_model(self, model: str) -> bool:
+        """
+        Change the chat model dynamically.
+        
+        Args:
+            model: Model name to switch to
+            
+        Returns:
+            True if successful, False if model not available
+        """
+        if model in self.AVAILABLE_MODELS:
+            old_model = self.chat_model
+            self.chat_model = model
+            logger.info(f"🔄 Chat model changed from {old_model} to {model}")
+            print(f"🤖 Now using: {self.AVAILABLE_MODELS[model]['name']}")
+            return True
+        else:
+            logger.warning(f"❌ Model {model} not available. Available models: {list(self.AVAILABLE_MODELS.keys())}")
+            return False
+    
+    def get_current_model_info(self) -> Dict[str, Any]:
+        """Get information about the currently selected model."""
+        return {
+            'model_id': self.chat_model,
+            'model_info': self.AVAILABLE_MODELS[self.chat_model],
+            'embedding_model': self.embedding_model
+        }
+    
+    @classmethod
+    def get_available_models(cls) -> Dict[str, Dict[str, Any]]:
+        """Get all available models and their information."""
+        return cls.AVAILABLE_MODELS.copy()
 
 # Testing function
 async def main():

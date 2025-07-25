@@ -192,6 +192,242 @@
             margin-bottom: 25px;
         }
         
+        /* Model Selection Styles */
+        .model-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        
+        .model-option:hover {
+            border-color: #1e3a8a;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.1);
+        }
+        
+        .model-option.selected {
+            border-color: #1e3a8a;
+            background: #dbeafe;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .model-name {
+            font-weight: 600;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+        }
+        
+        .model-cost {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .cost-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .cost-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .cost-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .model-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .current-model-badge {
+            background: #1e3a8a;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .model-selector {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* Document Summary Styles */
+        .summary-section {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(14, 165, 233, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .summary-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .summary-icon {
+            background: #0ea5e9;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: 600;
+        }
+        
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0c4a6e;
+        }
+        
+        .summary-doc-name {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #0ea5e9;
+            margin-bottom: 10px;
+        }
+        
+        .summary-content {
+            color: #1e293b;
+            font-size: 1rem;
+            line-height: 1.6;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #0ea5e9;
+            margin-top: 15px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Search History Styles */
+        .search-history {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .search-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .search-history-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .clear-history-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .clear-history-btn:hover {
+            background: #dc2626;
+        }
+        
+        .history-item {
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .history-item:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+        
+        .history-query {
+            font-size: 0.9rem;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .history-type {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .history-type.semantic {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .history-type.question {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .no-history {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 20px;
+        }
+        
         .result-item {
             border-left: 4px solid #1e3a8a;
             padding: 25px;
@@ -364,7 +600,7 @@
                     <span class="stat-label">AI Chunks</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">GPT-4o-mini</span>
+                    <span class="stat-number">{{ model_info.model_info.name if model_info else 'GPT-4o-mini' }}</span>
                     <span class="stat-label">AI Engine</span>
                 </div>
             </div>
@@ -388,11 +624,60 @@
                         <input type="file" name="file" accept=".pdf" required>
                         <p>Select a PDF document to process with AI</p>
                     </div>
-                    <input type="text" name="doc_name" placeholder="Document name (optional)">
                     <button type="submit" class="btn">Process with AI</button>
                 </form>
+                
+                {% if last_summary %}
+                <div class="summary-section">
+                    <div class="summary-header">
+                        <div class="summary-icon">✓</div>
+                        <div class="summary-title">Document Processed Successfully</div>
+                    </div>
+                    <div class="summary-doc-name">📄 {{ last_summary.doc_name }}</div>
+                    <div class="summary-content">
+                        {{ last_summary.summary }}
+                    </div>
+                </div>
+                {% endif %}
             </div>
             
+            <div class="card">
+                <h3>AI Model Selection</h3>
+                <div class="model-selector">
+                    {% if available_models %}
+                        {% for model_id, model_data in available_models.items() %}
+                            <div class="model-option {% if current_model == model_id %}selected{% endif %}" 
+                                 data-model="{{ model_id }}"
+                                 onclick="selectModel('{{ model_id }}')">
+                                <div class="model-header">
+                                    <div class="model-name">
+                                        {{ model_data.name }}
+                                        {% if current_model == model_id %}
+                                            <span class="current-model-badge">Current</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="model-cost cost-{{ model_data.cost_level }}">
+                                        {{ model_data.cost_level|title }} Cost
+                                    </div>
+                                </div>
+                                <div class="model-description">
+                                    {{ model_data.description }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Loading available models...</p>
+                    {% endif %}
+                </div>
+                <div style="margin-top: 15px;">
+                    <button id="switchModelBtn" class="btn" disabled onclick="switchModel()">
+                        Switch Model
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-grid">
             <div class="card">
                 <h3>Processed Documents</h3>
                 <div class="document-list">
@@ -411,6 +696,32 @@
                     {% endif %}
                 </div>
             </div>
+            
+            <div class="card" style="grid-column: span 1;">
+                <h3>Current Model Info</h3>
+                <div id="currentModelInfo">
+                    {% if model_info %}
+                        <div class="model-option selected">
+                            <div class="model-header">
+                                <div class="model-name">{{ model_info.model_info.name }}</div>
+                                <div class="model-cost cost-{{ model_info.model_info.cost_level }}">
+                                    {{ model_info.model_info.cost_level|title }} Cost
+                                </div>
+                            </div>
+                            <div class="model-description">
+                                {{ model_info.model_info.description }}
+                            </div>
+                            <div style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">
+                                <strong>Model ID:</strong> {{ model_info.model_id }}<br>
+                                <strong>Max Tokens:</strong> {{ "{:,}".format(model_info.model_info.max_tokens) }}<br>
+                                <strong>Embedding Model:</strong> {{ model_info.embedding_model }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>No model information available</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         
         <div class="main-grid">
@@ -418,6 +729,32 @@
                 <h3>Semantic Search</h3>
                 <input type="text" id="searchQuery" placeholder="Search through all documents (e.g., 'exam requirements')">
                 <button class="btn" onclick="performSearch()">AI Search</button>
+                
+                <!-- Search History -->
+                <div class="search-history">
+                    <div class="search-history-header">
+                        <div class="search-history-title">📝 Search History</div>
+                        {% if search_history %}
+                        <button class="clear-history-btn" onclick="clearSearchHistory()">Clear History</button>
+                        {% endif %}
+                    </div>
+                    
+                    <div id="searchHistoryContent">
+                        {% if search_history %}
+                            {% for item in search_history %}
+                            <div class="history-item" onclick="useHistoryQuery('{{ item.query|replace("'", "\\'") }}', '{{ item.search_type }}')">
+                                <div class="history-query">{{ item.query }}</div>
+                                <div class="history-meta">
+                                    <span class="history-type {{ item.search_type }}">{{ item.search_type }}</span>
+                                    <span>{{ item.timestamp[:16] }} • {{ item.results_count }} results</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-history">No search history yet. Start searching to see your queries here!</div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
             
             <div class="card">
@@ -451,6 +788,8 @@
                     showResults(`Error: ${data.error}`);
                 } else {
                     displaySearchResults(data);
+                    // Refresh search history after successful search
+                    setTimeout(refreshSearchHistory, 500);
                 }
             } catch (error) {
                 showResults(`Error: ${error.message}`);
@@ -491,6 +830,8 @@
                             <div class="result-content">${data.answer}</div>
                         </div>
                     `);
+                    // Refresh search history after successful Q&A
+                    setTimeout(refreshSearchHistory, 500);
                 }
             } catch (error) {
                 showResults(`Error: ${error.message}`);
@@ -558,6 +899,186 @@
                 e.preventDefault();
                 askQuestion();
             }
+        });
+        
+        // Model Selection Functionality
+        let selectedModel = '{{ current_model }}';
+        
+        function selectModel(modelId) {
+            // Remove selected class from all options
+            document.querySelectorAll('.model-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            document.querySelector(`[data-model="${modelId}"]`).classList.add('selected');
+            
+            selectedModel = modelId;
+            
+            // Enable/disable switch button
+            const switchBtn = document.getElementById('switchModelBtn');
+            const currentModel = '{{ current_model }}';
+            
+            if (selectedModel !== currentModel) {
+                switchBtn.disabled = false;
+                switchBtn.textContent = `Switch to ${modelId}`;
+            } else {
+                switchBtn.disabled = true;
+                switchBtn.textContent = 'Switch Model';
+            }
+        }
+        
+        async function switchModel() {
+            if (!selectedModel) {
+                alert('Please select a model first');
+                return;
+            }
+            
+            const switchBtn = document.getElementById('switchModelBtn');
+            const originalText = switchBtn.textContent;
+            switchBtn.disabled = true;
+            switchBtn.textContent = 'Switching...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('model', selectedModel);
+                
+                const response = await fetch('/set_model', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success message
+                    showModelSwitchMessage(data.message, 'success');
+                    
+                    // Reload page to update UI with new model info
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showModelSwitchMessage(data.error || 'Failed to switch model', 'error');
+                    switchBtn.disabled = false;
+                    switchBtn.textContent = originalText;
+                }
+            } catch (error) {
+                showModelSwitchMessage(`Error: ${error.message}`, 'error');
+                switchBtn.disabled = false;
+                switchBtn.textContent = originalText;
+            }
+        }
+        
+        function showModelSwitchMessage(message, type) {
+            // Create and show a temporary message
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flash-message flash-${type === 'success' ? 'success' : 'error'}`;
+            messageDiv.textContent = message;
+            messageDiv.style.position = 'fixed';
+            messageDiv.style.top = '20px';
+            messageDiv.style.right = '20px';
+            messageDiv.style.zIndex = '1000';
+            messageDiv.style.maxWidth = '400px';
+            
+            if (type === 'error') {
+                messageDiv.style.background = '#fee2e2';
+                messageDiv.style.color = '#dc2626';
+                messageDiv.style.border = '1px solid #fecaca';
+            }
+            
+            document.body.appendChild(messageDiv);
+            
+            // Remove message after 3 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 3000);
+        }
+        
+        // Search History Functions
+        function useHistoryQuery(query, searchType) {
+            if (searchType === 'semantic') {
+                document.getElementById('searchQuery').value = query;
+                performSearch();
+            } else if (searchType === 'question') {
+                document.getElementById('questionInput').value = query;
+                askQuestion();
+            }
+        }
+        
+        async function clearSearchHistory() {
+            if (!confirm('Are you sure you want to clear your search history?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/clear_search_history', {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update the search history display
+                    document.getElementById('searchHistoryContent').innerHTML = 
+                        '<div class="no-history">No search history yet. Start searching to see your queries here!</div>';
+                    
+                    // Hide clear button
+                    const clearBtn = document.querySelector('.clear-history-btn');
+                    if (clearBtn) {
+                        clearBtn.style.display = 'none';
+                    }
+                    
+                    showModelSwitchMessage('Search history cleared successfully', 'success');
+                } else {
+                    showModelSwitchMessage('Failed to clear search history', 'error');
+                }
+            } catch (error) {
+                showModelSwitchMessage('Error clearing search history', 'error');
+            }
+        }
+        
+        async function refreshSearchHistory() {
+            try {
+                const response = await fetch('/search_history');
+                const data = await response.json();
+                
+                const content = document.getElementById('searchHistoryContent');
+                
+                if (data.history && data.history.length > 0) {
+                    let html = '';
+                    data.history.forEach(item => {
+                        const escapedQuery = item.query.replace(/'/g, "\\'");
+                        html += `
+                            <div class="history-item" onclick="useHistoryQuery('${escapedQuery}', '${item.search_type}')">
+                                <div class="history-query">${item.query}</div>
+                                <div class="history-meta">
+                                    <span class="history-type ${item.search_type}">${item.search_type}</span>
+                                    <span>${item.timestamp.substring(0, 16)} • ${item.results_count} results</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    content.innerHTML = html;
+                    
+                    // Show clear button if not visible
+                    const clearBtn = document.querySelector('.clear-history-btn');
+                    if (clearBtn) {
+                        clearBtn.style.display = 'block';
+                    }
+                } else {
+                    content.innerHTML = '<div class="no-history">No search history yet. Start searching to see your queries here!</div>';
+                }
+            } catch (error) {
+                console.error('Failed to refresh search history:', error);
+            }
+        }
+        
+        // Initialize model selection on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            selectModel('{{ current_model }}');
         });
     </script>
 </body>
