@@ -28,7 +28,7 @@ class TerminalInterface:
             print(f"❌ Error: {e}")
             return None
     
-    async def search_documents(self, query: str, limit: int = 3):
+    async def search_documents(self, query: str, limit: int = 2):
         """Search through all documents."""
         try:
             print(f"🔍 Searching for: '{query}'")
@@ -43,7 +43,34 @@ class TerminalInterface:
             for i, result in enumerate(results, 1):
                 score = result['similarity_score'] * 100
                 doc_name = result['metadata'].get('doc_name', 'Unknown')
-                content_preview = result['content'][:150] + "..."
+                
+                # Show much more content so users can see important information
+                content = result['content']
+                if len(content) > 500:
+                    # Find a good breaking point - look for the query terms
+                    query_words = query.lower().split()
+                    content_lower = content.lower()
+                    
+                    # Find where query terms appear
+                    best_start = 0
+                    for word in query_words:
+                        if word in content_lower:
+                            pos = content_lower.find(word)
+                            if pos > 0:
+                                # Start a bit before the match
+                                best_start = max(0, pos - 100)
+                                break
+                    
+                    # Extract content around the match
+                    end_pos = min(best_start + 500, len(content))
+                    content_preview = content[best_start:end_pos]
+                    
+                    if best_start > 0:
+                        content_preview = "..." + content_preview
+                    if end_pos < len(content):
+                        content_preview = content_preview + "..."
+                else:
+                    content_preview = content
                 
                 print(f"📄 Result {i} (Relevance: {score:.1f}%)")
                 print(f"📝 Document: {doc_name}")

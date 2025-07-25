@@ -148,10 +148,41 @@ def api_search():
             results = await doc_processor.search_document(query, limit=5)
             formatted_results = []
             for result in results:
+                # Create focused preview that shows relevant parts
+                content = result['content']
+                query_words = query.lower().split()
+                content_lower = content.lower()
+                
+                # Find the best position based on query matches
+                best_start = 0
+                best_score = 0
+                
+                # Check every 50-character position
+                for start in range(0, len(content), 50):
+                    end = min(start + 400, len(content))
+                    snippet = content_lower[start:end]
+                    
+                    # Score based on query word occurrences
+                    score = sum(snippet.count(word) for word in query_words if len(word) > 2)
+                    
+                    if score > best_score:
+                        best_score = score
+                        best_start = start
+                
+                # Extract focused preview
+                end_pos = min(best_start + 600, len(content))
+                focused_preview = content[best_start:end_pos]
+                
+                if best_start > 0:
+                    focused_preview = "..." + focused_preview
+                if end_pos < len(content):
+                    focused_preview = focused_preview + "..."
+                
                 formatted_results.append({
-                    'document': result['metadata'].get('doc_name', 'Unknown'),
-                    'relevance': round(result['similarity_score'] * 100, 1),
-                    'content': result['content'][:200] + '...' if len(result['content']) > 200 else result['content']
+                    'document_name': result['metadata'].get('doc_name', 'Unknown'),
+                    'relevance_score': round(result['similarity_score'] * 100, 1),
+                    'content': content,  # Full content for JavaScript to use
+                    'focused_preview': focused_preview
                 })
             return {'query': query, 'results': formatted_results}
         except Exception as e:
@@ -160,14 +191,39 @@ def api_search():
     result = asyncio.run(do_search())
     return jsonify(result)
 
+def find_available_port():
+    """Find an available port starting from 5001."""
+    import socket
+    for port in range(5001, 5010):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(('', port))
+                return port
+        except OSError:
+            continue
+    return 5001  # fallback
+
 if __name__ == '__main__':
     print("🚀 Initializing Smart Document Analyzer Web UI...")
     
     if init_processor():
         print("✅ Document processor initialized successfully!")
-        print("🌐 Starting web server at http://localhost:5000")
+        
+        # Find an available port (skip 5000 as it's used by macOS)
+        port = find_available_port()
+        
+        print(f"🌐 Starting web server at http://localhost:{port}")
         print("📄 Upload PDFs and interact with AI through the web interface")
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        print("")
+        print("🎯 Open your browser and go to:")
+        print(f"   👉 http://localhost:{port}")
+        print("")
+        
+        try:
+            app.run(debug=True, host='0.0.0.0', port=port, use_reloader=False)
+        except Exception as e:
+            print(f"❌ Error starting server: {e}")
+            print("💡 Try restarting your terminal or killing Python processes")
     else:
         print("❌ Failed to initialize document processor")
         print("💡 Make sure OPENAI_API_KEY is set in .env file") 

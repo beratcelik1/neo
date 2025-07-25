@@ -141,55 +141,53 @@ class DocumentProcessor:
             raise ValueError(f"Failed to extract text from PDF: {e}")
     
     def _chunk_text(self, text: str) -> List[str]:
-        """Split text into chunks with overlap for better context preservation."""
+        """Split text into balanced chunks with overlap for better search performance."""
         # Use tiktoken for accurate token counting
         try:
             encoding = tiktoken.encoding_for_model(self.chat_model)
         except KeyError:
             encoding = tiktoken.get_encoding("cl100k_base")
         
-        # Split by paragraphs first, then by sentences if needed
-        paragraphs = text.split('\n\n')
         chunks = []
-        current_chunk = ""
+        start = 0
+        text_length = len(text)
         
-        for paragraph in paragraphs:
-            # Check if adding this paragraph would exceed chunk size
-            potential_chunk = current_chunk + "\n\n" + paragraph if current_chunk else paragraph
+        while start < text_length and len(chunks) < self.max_chunks_per_document:
+            # Calculate end position
+            end = min(start + self.chunk_size, text_length)
             
-            if len(encoding.encode(potential_chunk)) <= self.chunk_size:
-                current_chunk = potential_chunk
-            else:
-                # Save current chunk if it's not empty
-                if current_chunk:
-                    chunks.append(current_chunk.strip())
+            # If not at the end of text, find a good break point
+            if end < text_length:
+                # Look backwards for sentence endings, paragraph breaks, or spaces
+                original_end = end
+                for i in range(end, max(end - 200, start), -1):
+                    if text[i] in '.!?\n':
+                        end = i + 1
+                        break
+                    elif text[i] == ' ':
+                        end = i
+                        break
                 
-                # Start new chunk with current paragraph
-                current_chunk = paragraph
-                
-                # If single paragraph is too long, split by sentences
-                if len(encoding.encode(current_chunk)) > self.chunk_size:
-                    sentences = current_chunk.split('. ')
-                    current_chunk = ""
-                    
-                    for sentence in sentences:
-                        potential_sentence_chunk = current_chunk + ". " + sentence if current_chunk else sentence
-                        if len(encoding.encode(potential_sentence_chunk)) <= self.chunk_size:
-                            current_chunk = potential_sentence_chunk
-                        else:
-                            if current_chunk:
-                                chunks.append(current_chunk.strip())
-                            current_chunk = sentence
-                    
-                # Enforce maximum chunks limit
-                if len(chunks) >= self.max_chunks_per_document:
-                    break
+                # If we couldn't find a good break point, use original end
+                if end == start:
+                    end = original_end
+            
+            # Extract chunk
+            chunk = text[start:end].strip()
+            
+            # Only add non-empty chunks that meet minimum size
+            if chunk and len(chunk) > 50:  # Minimum chunk size
+                chunks.append(chunk)
+            
+            # Move start position with overlap
+            # Ensure we make progress and don't get stuck
+            next_start = end - self.chunk_overlap
+            if next_start <= start:
+                next_start = start + max(1, self.chunk_size // 2)  # Force progress
+            
+            start = next_start
         
-        # Add the last chunk
-        if current_chunk and len(chunks) < self.max_chunks_per_document:
-            chunks.append(current_chunk.strip())
-        
-        return chunks[:self.max_chunks_per_document]
+        return chunks
     
     async def _generate_embeddings(self, texts: List[str]) -> List[List[float]]:
         """Generate embeddings for text chunks using OpenAI."""
