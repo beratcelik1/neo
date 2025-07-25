@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Document Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        input[type="text"], input[type="file"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .results {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9ff;
+            border-radius: 6px;
+        }
+        
+        .relevance-score {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .document-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .document-item {
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+        
+        .document-name {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .document-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+        
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        
+        .flash-message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .flash-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .flash-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Smart Document Analyzer</h1>
+            <p>AI-powered document processing with semantic search and Q&A</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">{{ documents|length }}</div>
+                    <div class="stat-label">Documents</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ documents|sum(attribute='chunk_count') or 0 }}</div>
+                    <div class="stat-label">AI Chunks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">OpenAI</div>
+                    <div class="stat-label">AI Engine</div>
+                </div>
+            </div>
+        </div>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message flash-success">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="dashboard">
+            <div class="card">
+                <h3>📄 Upload Document</h3>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="upload-area">
+                        <input type="file" name="file" accept=".pdf" required>
+                        <p>Select a PDF document to process with AI</p>
+                    </div>
+                    <input type="text" name="doc_name" placeholder="Document name (optional)">
+                    <button type="submit" class="btn">🚀 Process with AI</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3>📚 Processed Documents</h3>
+                <div class="document-list">
+                    {% if documents %}
+                        {% for doc in documents %}
+                            <div class="document-item">
+                                <div class="document-name">{{ doc.name }}</div>
+                                <div class="document-meta">
+                                    📊 {{ doc.chunk_count }} chunks • 
+                                    ⏰ {{ doc.processed_at[:10] }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No documents processed yet. Upload a PDF to get started!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h3>🔍 Semantic Search</h3>
+                <input type="text" id="searchQuery" placeholder="Search through all documents (e.g., 'monday exercises')">
+                <button class="btn" onclick="performSearch()">🔍 AI Search</button>
+            </div>
+            
+            <div class="card">
+                <h3>❓ Ask AI</h3>
+                <textarea id="questionInput" placeholder="Ask a question about your documents (e.g., 'What are the Monday workout exercises?')"></textarea>
+                <button class="btn" onclick="askQuestion()">🤖 Ask AI</button>
+            </div>
+        </div>
+        
+        <div id="results" class="results" style="display: none;">
+            <h3>📊 Results</h3>
+            <div id="resultsContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        async function performSearch() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                alert('Please enter a search query');
+                return;
+            }
+            
+            showLoading('Searching with AI...');
+            
+            try {
+                const response = await fetch('/api/search?q=' + encodeURIComponent(query));
+                const data = await response.json();
+                
+                if (data.error) {
+                    showResults(`❌ Error: ${data.error}`);
+                } else {
+                    displaySearchResults(data);
+                }
+            } catch (error) {
+                showResults(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        async function askQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+            
+            showLoading('AI is thinking...');
+            
+            try {
+                const formData = new FormData();
+                formData.append('question', question);
+                
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.error) {
+                    showResults(`❌ Error: ${data.error}`);
+                } else {
+                    showResults(`
+                        <div class="result-item">
+                            <strong>❓ Question:</strong> ${question}<br><br>
+                            <strong>🤖 AI Answer:</strong><br>${data.answer}
+                        </div>
+                    `);
+                }
+            } catch (error) {
+                showResults(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        function displaySearchResults(data) {
+            let html = `<h4>🔍 Search Results for "${data.query}"</h4>`;
+            
+            if (data.results && data.results.length > 0) {
+                data.results.forEach((result, index) => {
+                    html += `
+                        <div class="result-item">
+                            <div class="relevance-score">📄 Result ${index + 1} (Relevance: ${result.relevance}%)</div>
+                            <strong>📝 Document:</strong> ${result.document}<br>
+                            <strong>📖 Content:</strong> ${result.content}
+                        </div>
+                    `;
+                });
+            } else {
+                html += '<p>No results found for your query.</p>';
+            }
+            
+            showResults(html);
+        }
+        
+        function showLoading(message) {
+            const results = document.getElementById('results');
+            const content = document.getElementById('resultsContent');
+            content.innerHTML = `<div class="loading">${message}</div>`;
+            results.style.display = 'block';
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function showResults(html) {
+            const results = document.getElementById('results');
+            const content = document.getElementById('resultsContent');
+            content.innerHTML = html;
+            results.style.display = 'block';
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Allow Enter key to trigger search and ask
+        document.getElementById('searchQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        document.getElementById('questionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                askQuestion();
+            }
+        });
+    </script>
+</body>
+</html> 
