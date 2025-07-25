@@ -28,7 +28,7 @@ class TerminalInterface:
             print(f"❌ Error: {e}")
             return None
     
-    async def search_documents(self, query: str, limit: int = 2):
+    async def search_documents(self, query: str, limit: int = 3):
         """Search through all documents."""
         try:
             print(f"🔍 Searching for: '{query}'")

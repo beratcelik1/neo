@@ -306,7 +306,7 @@ class DocumentProcessor:
             logger.error(f"❌ Document processing failed: {e}")
             raise
     
-    async def search_document(self, query: str, doc_id: str = None, limit: int = 5) -> List[Dict[str, Any]]:
+    async def search_document(self, query: str, doc_id: str = None, limit: int = 3) -> List[Dict[str, Any]]:
         """
         Perform enhanced semantic search across documents with duplicate removal and keyword boosting.
         
@@ -401,7 +401,7 @@ class DocumentProcessor:
         """
         try:
             # Search for relevant content
-            search_results = await self.search_document(question, doc_id, limit=5)
+            search_results = await self.search_document(question, doc_id, limit=3)
             
             if not search_results:
                 return "I couldn't find any relevant information in the documents to answer your question."

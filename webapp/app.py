@@ -102,7 +102,7 @@ def search():
     
     async def do_search():
         try:
-            results = await doc_processor.search_document(query, limit=5)
+            results = await doc_processor.search_document(query, limit=3)
             return results
         except Exception as e:
             return {'error': str(e)}
@@ -145,7 +145,7 @@ def api_search():
     
     async def do_search():
         try:
-            results = await doc_processor.search_document(query, limit=5)
+            results = await doc_processor.search_document(query, limit=3)
             formatted_results = []
             for result in results:
                 # Create focused preview that shows relevant parts

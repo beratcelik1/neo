@@ -14,7 +14,7 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f8fafc;
+            background: #ffffff;
             color: #1e293b;
             line-height: 1.6;
         }
@@ -30,10 +30,10 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 40px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #1e3a8a;
             border-radius: 20px;
             color: white;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
         }
         
         .header h1 {
@@ -91,24 +91,21 @@
             background: white;
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
+            border: 2px solid #e2e8f0;
             transition: all 0.3s ease;
         }
         
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-color: #1e3a8a;
+            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.15);
         }
         
         .card h3 {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #1e293b;
+            color: #1e3a8a;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         /* Upload Area */
@@ -123,18 +120,13 @@
         }
         
         .upload-area:hover {
-            border-color: #667eea;
+            border-color: #1e3a8a;
             background: #f1f5f9;
-        }
-        
-        .upload-area.dragover {
-            border-color: #667eea;
-            background: #eef2ff;
         }
         
         /* Buttons */
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #1e3a8a;
             color: white;
             border: none;
             padding: 14px 28px;
@@ -143,12 +135,13 @@
             font-size: 1rem;
             font-weight: 500;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
         }
         
         .btn:hover {
+            background: #1e40af;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
         }
         
         .btn:active {
@@ -171,8 +164,8 @@
         
         input[type="text"]:focus,
         textarea:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
             outline: none;
         }
         
@@ -187,33 +180,30 @@
             background: white;
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
+            border: 2px solid #e2e8f0;
             margin-top: 30px;
         }
         
         .results h3 {
             font-size: 1.5rem;
             font-weight: 600;
-            color: #1e293b;
+            color: #1e3a8a;
             margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .result-item {
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #1e3a8a;
             padding: 25px;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: #f8fafc;
             border-radius: 12px;
             transition: all 0.3s ease;
         }
         
         .result-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 15px rgba(30, 58, 138, 0.1);
         }
         
         .result-header {
@@ -225,12 +215,12 @@
         
         .result-title {
             font-weight: 600;
-            color: #1e293b;
+            color: #1e3a8a;
             font-size: 1.1rem;
         }
         
         .relevance-score {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #1e3a8a;
             color: white;
             padding: 6px 12px;
             border-radius: 20px;
@@ -267,13 +257,13 @@
         }
         
         .document-item:hover {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
+            background: white;
+            border-color: #1e3a8a;
         }
         
         .document-name {
             font-weight: 600;
-            color: #1e293b;
+            color: #1e3a8a;
             font-size: 1.1rem;
             margin-bottom: 8px;
         }
@@ -289,7 +279,7 @@
         /* Loading Animation */
         .loading {
             text-align: center;
-            color: #667eea;
+            color: #1e3a8a;
             font-style: italic;
             padding: 40px;
         }
@@ -299,7 +289,7 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 2px solid #667eea;
+            border: 2px solid #1e3a8a;
             border-radius: 50%;
             border-top-color: transparent;
             animation: spin 1s linear infinite;
@@ -325,9 +315,9 @@
         }
         
         .flash-success {
-            background: #dcfce7;
-            color: #166534;
-            border: 1px solid #bbf7d0;
+            background: #dbeafe;
+            color: #1e3a8a;
+            border: 1px solid #93c5fd;
         }
         
         /* Responsive */
@@ -361,7 +351,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 Smart Document Analyzer</h1>
+            <h1>Smart Document Analyzer</h1>
             <p>AI-powered document processing with semantic search and Q&A</p>
             
             <div class="stats">
@@ -374,7 +364,7 @@
                     <span class="stat-label">AI Chunks</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">GPT-4o</span>
+                    <span class="stat-number">GPT-4o-mini</span>
                     <span class="stat-label">AI Engine</span>
                 </div>
             </div>
@@ -392,27 +382,27 @@
         
         <div class="main-grid">
             <div class="card">
-                <h3>📄 Upload Document</h3>
+                <h3>Upload Document</h3>
                 <form action="/upload" method="post" enctype="multipart/form-data">
                     <div class="upload-area">
                         <input type="file" name="file" accept=".pdf" required>
                         <p>Select a PDF document to process with AI</p>
                     </div>
                     <input type="text" name="doc_name" placeholder="Document name (optional)">
-                    <button type="submit" class="btn">🚀 Process with AI</button>
+                    <button type="submit" class="btn">Process with AI</button>
                 </form>
             </div>
             
             <div class="card">
-                <h3>📚 Processed Documents</h3>
+                <h3>Processed Documents</h3>
                 <div class="document-list">
                     {% if documents %}
                         {% for doc in documents %}
                             <div class="document-item">
                                 <div class="document-name">{{ doc.name }}</div>
                                 <div class="document-meta">
-                                    <span>📊 {{ doc.chunk_count }} chunks</span>
-                                    <span>⏰ {{ doc.processed_at[:10] }}</span>
+                                    <span>{{ doc.chunk_count }} chunks</span>
+                                    <span>{{ doc.processed_at[:10] }}</span>
                                 </div>
                             </div>
                         {% endfor %}
@@ -425,20 +415,20 @@
         
         <div class="main-grid">
             <div class="card">
-                <h3>🔍 Semantic Search</h3>
+                <h3>Semantic Search</h3>
                 <input type="text" id="searchQuery" placeholder="Search through all documents (e.g., 'exam requirements')">
-                <button class="btn" onclick="performSearch()">🔍 AI Search</button>
+                <button class="btn" onclick="performSearch()">AI Search</button>
             </div>
             
             <div class="card">
-                <h3>❓ Ask AI</h3>
+                <h3>Ask AI</h3>
                 <textarea id="questionInput" placeholder="Ask a question about your documents (e.g., 'What are the exam requirements in the requirements document?')"></textarea>
-                <button class="btn" onclick="askQuestion()">🤖 Ask AI</button>
+                <button class="btn" onclick="askQuestion()">Ask AI</button>
             </div>
         </div>
         
         <div id="results" class="results" style="display: none;">
-            <h3>📊 Results</h3>
+            <h3>Results</h3>
             <div id="resultsContent"></div>
         </div>
     </div>
@@ -451,19 +441,19 @@
                 return;
             }
             
-            showLoading('🔍 Searching with AI...');
+            showLoading('Searching with AI...');
             
             try {
                 const response = await fetch('/api/search?q=' + encodeURIComponent(query));
                 const data = await response.json();
                 
                 if (data.error) {
-                    showResults(`❌ Error: ${data.error}`);
+                    showResults(`Error: ${data.error}`);
                 } else {
                     displaySearchResults(data);
                 }
             } catch (error) {
-                showResults(`❌ Error: ${error.message}`);
+                showResults(`Error: ${error.message}`);
             }
         }
         
@@ -474,7 +464,7 @@
                 return;
             }
             
-            showLoading('🤖 AI is thinking...');
+            showLoading('AI is thinking...');
             
             try {
                 const formData = new FormData();
@@ -487,28 +477,28 @@
                 const data = await response.json();
                 
                 if (data.error) {
-                    showResults(`❌ Error: ${data.error}`);
+                    showResults(`Error: ${data.error}`);
                 } else {
                     showResults(`
                         <div class="result-item">
                             <div class="result-header">
-                                <div class="result-title">❓ Your Question</div>
+                                <div class="result-title">Your Question</div>
                             </div>
                             <div class="result-content">${question}</div>
                             <div class="result-header" style="margin-top: 20px;">
-                                <div class="result-title">🤖 AI Answer</div>
+                                <div class="result-title">AI Answer</div>
                             </div>
                             <div class="result-content">${data.answer}</div>
                         </div>
                     `);
                 }
             } catch (error) {
-                showResults(`❌ Error: ${error.message}`);
+                showResults(`Error: ${error.message}`);
             }
         }
         
         function displaySearchResults(data) {
-            let html = `<h4 style="margin-bottom: 20px; color: #667eea;">🔍 Search Results for "${data.query}"</h4>`;
+            let html = `<h4 style="margin-bottom: 20px; color: #1e3a8a;">Search Results for "${data.query}"</h4>`;
             
             if (data.results && data.results.length > 0) {
                 data.results.forEach((result, index) => {
@@ -526,7 +516,7 @@
                     html += `
                         <div class="result-item">
                             <div class="result-header">
-                                <div class="result-title">📄 ${result.document_name || 'Unknown Document'}</div>
+                                <div class="result-title">${result.document_name || 'Unknown Document'}</div>
                                 <div class="relevance-score">Relevance: ${result.relevance_score || 'N/A'}%</div>
                             </div>
                             <div class="result-content">${displayContent}</div>
